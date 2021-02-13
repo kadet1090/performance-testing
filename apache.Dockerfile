@@ -1,8 +1,7 @@
-FROM php:7.4-fpm-alpine
+FROM php:7.4-apache
 
-RUN apk add --no-cache autoconf openssl-dev g++ make pcre-dev icu-dev zlib-dev libzip-dev git && \
-    docker-php-ext-install bcmath intl opcache zip sockets && \
-    apk del --purge autoconf g++ make;
+RUN apt-get update && apt-get -y install libicu-dev libzip-dev && \
+    docker-php-ext-install bcmath intl opcache zip sockets;
 
 ENV APP_ENV=prod
 ENV DATABASE_URL="sqlite:////var/db/app.db"
@@ -18,6 +17,8 @@ COPY --from=symfony-demo:base /var/db /var/db
 RUN ln -snf /usr/share/zoneinfo/Europe/Warsaw /etc/localtime && \
     echo "date.timezone = Europe/Warsaw" >> /usr/local/etc/php/conf.d/datetime.ini;
 
-ADD ./docker/php-fpm.conf /usr/local/etc/php-fpm.d/symfony.conf
+RUN a2enmod rewrite
+COPY ./docker/apache.conf /etc/apache2/sites-available/000-default.conf
+RUN chown -R www-data:www-data /var/www
 
-CMD ["./bin/docker-init.sh", "php-fpm"]
+CMD ["./bin/docker-init.sh", "apache2-foreground"]
