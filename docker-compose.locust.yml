@@ -31,8 +31,7 @@ services:
     image: nginx:latest
     volumes:
       - ./public:/var/www/public
-      - ./docker/symfony-demo.conf:/etc/nginx/conf.d/default.conf
-      - ./docker/upstream.conf:/etc/nginx/conf.d/upstream.conf
+      - ./docker/nginx-fpm.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 8083:8080
     depends_on:
@@ -45,3 +44,15 @@ services:
     image: symfony-demo:apache
     ports:
       - 8084:80
+
+  rr:
+    image: symfony-demo:rr
+
+  frontend-rr-nginx:
+    image: nginx:latest
+    volumes:
+      - ./docker/nginx-rr.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 8085:8080
+    depends_on:
+      - rr

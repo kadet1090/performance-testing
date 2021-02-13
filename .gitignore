@@ -1,6 +1,8 @@
 /public/build/fonts/glyphicons-*
 /public/build/images/glyphicons-*
 
+__pycache__
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
