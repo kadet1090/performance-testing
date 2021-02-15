@@ -34,17 +34,19 @@ services:
       - KIBANA_HOST=http://kibana:5601
 
   locust-master:
-    image: locustio/locust
+    build: locust
+    environment:
+      - ELASTICSEARCH_HOST=http://elastic:9200
     ports:
       - "8080:8089"
     volumes:
-      - ./:/mnt/locust
+      - ./locust:/mnt/locust
     command: -f /mnt/locust/locustfile.py --master -H http://locust-master:8089
 
   locust-worker:
-    image: locustio/locust
+    build: locust
     volumes:
-      - ./:/mnt/locust
+      - ./locust:/mnt/locust
     command: -f /mnt/locust/locustfile.py --worker --master-host locust-master
 
   frontend-rr:
