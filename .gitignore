@@ -2,6 +2,7 @@
 /public/build/images/glyphicons-*
 
 __pycache__
+/results/
 
 ###> symfony/framework-bundle ###
 /.env.local
