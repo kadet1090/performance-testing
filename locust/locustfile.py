@@ -72,7 +72,7 @@ if '--master' in sys.argv:
 seed(3721)
 
 MAX_USER_COUNT = int(os.getenv("MAX_USER_COUNT", "250"))
-TIME_LIMIT     = int(os.getenv("TIME_LIMIT", "300"))
+TIME_LIMIT     = int(os.getenv("TIME_LIMIT", "500"))
 
 class CustomShapeLoad(LoadTestShape):
     time_limit = TIME_LIMIT

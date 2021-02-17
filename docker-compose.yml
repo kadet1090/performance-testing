@@ -21,6 +21,7 @@ services:
 
   metricbeat:
     image: docker.elastic.co/beats/metricbeat:7.11.0
+    restart: on-failure
     user: root
     depends_on:
       - kibana
@@ -88,6 +89,23 @@ services:
       - 8085:8080
     depends_on:
       - rr
+
+  frontend-ppm:
+    image: nginx:latest
+    volumes:
+      - ./public:/var/www/public
+      - ./docker/nginx-ppm.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 8086:8080
+    depends_on:
+      - ppm
+
+  ppm:
+    image: symfony-demo:php-pm
+    env_file:
+      - .env
+    environment:
+      - APP_ENV=prod
 
 volumes:
   esdata: ~
