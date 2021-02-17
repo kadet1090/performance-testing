@@ -1,8 +1,15 @@
 /public/build/fonts/glyphicons-*
 /public/build/images/glyphicons-*
 
-__pycache__
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+/venv/
+
 /results/
+
+
 
 ###> symfony/framework-bundle ###
 /.env.local
