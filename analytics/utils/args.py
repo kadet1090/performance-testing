@@ -34,3 +34,14 @@ def add_per_path_arg(parser: ArgumentParser):
         '--per-path', '-p', 
         dest='per_path', action='store_true',
         help="Enable per path stats")
+
+def add_resources_args(parser: ArgumentParser):
+    parser.add_argument(
+        '--cpu', '-C', 
+        dest='cpu', action='store_true',
+        help="Enable cpu stats")
+
+    parser.add_argument(
+        '--memory', '-M',
+        dest='memory', action='store_true',
+        help="Enable memory stats") 
