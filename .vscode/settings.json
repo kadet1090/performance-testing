@@ -1,0 +1,6 @@
+{
+    "python.languageServer": "Microsoft",
+    "python.autoComplete.extraPaths": [
+        "./analytics/"
+    ]
+}
