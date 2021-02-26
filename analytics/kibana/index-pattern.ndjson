@@ -1,0 +1,2 @@
+{"attributes":{"fieldAttrs":"{}","fields":"[]","timeFieldName":"@timestamp","title":"locust*"},"id":"aba12dc0-6fdb-11eb-9568-3f6c74cf7344","migrationVersion":{"index-pattern":"7.11.0"},"references":[],"type":"index-pattern","updated_at":"2021-02-15T22:18:03.292Z","version":"WzMyMTgsMTBd"}
+{"exportedCount":1,"missingRefCount":0,"missingReferences":[]}
