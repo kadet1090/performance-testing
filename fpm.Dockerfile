@@ -18,6 +18,6 @@ COPY --from=symfony-demo:base /var/db /var/db
 RUN ln -snf /usr/share/zoneinfo/Europe/Warsaw /etc/localtime && \
     echo "date.timezone = Europe/Warsaw" >> /usr/local/etc/php/conf.d/datetime.ini;
 
-ADD ./docker/php-fpm.conf /usr/local/etc/php-fpm.d/symfony.conf
+ADD ./docker/php-fpm.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 
 CMD ["./bin/docker-init.sh", "php-fpm"]

@@ -8,6 +8,25 @@ except ImportError:
 
 from stats import get_request_stats, get_memory_stats, get_cpu_stats
 import utils.args
+import humanize
+
+time_formatter = "{:.0f}ms".format
+percent_formatter = "{:.1%}".format
+memory_formatter = humanize.naturalsize
+
+formatters = {
+    "minimum": time_formatter,
+    "average": time_formatter,
+    "maximum": time_formatter,
+    "rps": "{:.2f}".format,
+    "50th percentile": time_formatter,
+    "80th percentile": time_formatter,
+    "95th percentile": time_formatter,
+    "peak memory": memory_formatter,
+    "95th memory percentile": memory_formatter,
+    "average cpu": percent_formatter,
+    "95th cpu percentile": percent_formatter,
+}
 
 if __name__ == "__main__":
     parser = ArgumentParser("Summarizes results")
@@ -35,5 +54,6 @@ if __name__ == "__main__":
         stats_df = stats_df.append(current_df)
 
     stats_df = stats_df.set_index(["suite"], append=True)
-    stats_df = stats_df.drop(columns=["content length", "requests", "failures", "rps"])
-    print(stats_df)
+    stats_df = stats_df.drop(columns=["content length", "requests"])
+
+    print(stats_df.to_string(formatters=formatters))

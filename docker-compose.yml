@@ -110,3 +110,4 @@ services:
 volumes:
   esdata: ~
   metricbeat: ~
+  fpm-socket: ~
