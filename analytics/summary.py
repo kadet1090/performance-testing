@@ -31,6 +31,22 @@ formatters = {
 if __name__ == "__main__":
     parser = ArgumentParser("Summarizes results")
     parser.add_argument("definitions", help="YAML file with test definitions")
+    parser.set_defaults(format=lambda df: pd.DataFrame.to_string(df, formatters=formatters))
+
+    output_format_group = parser.add_mutually_exclusive_group()
+    output_format_group.add_argument(
+        "--latex", "-l", 
+        help="Output as LaTeX table", 
+        const=lambda df: pd.DataFrame.to_latex(df, formatters=formatters), 
+        action='store_const', 
+        dest="format")
+    output_format_group.add_argument(
+        "--csv", "-c", 
+        help="Output as CSV", 
+        const=pd.DataFrame.to_csv, 
+        action='store_const', 
+        dest="format")
+
     utils.args.add_elastic_arg(parser)
 
     args = parser.parse_args()
@@ -53,7 +69,7 @@ if __name__ == "__main__":
 
         stats_df = stats_df.append(current_df)
 
-    stats_df = stats_df.set_index(["suite"], append=True)
+    stats_df = stats_df.set_index(["suite"])
     stats_df = stats_df.drop(columns=["content length", "requests"])
 
-    print(stats_df.to_string(formatters=formatters))
+    print(args.format(stats_df))
