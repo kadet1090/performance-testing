@@ -28,6 +28,7 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
+            - '../src/DataFixtures/samples'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -39,3 +40,24 @@ services:
     # 'arguments' key and define the arguments just below the service class
     App\EventSubscriber\CommentNotificationSubscriber:
         $sender: '%app.notifications.email_sender%'
+
+    Kadet\Highlighter\KeyLighter:
+        factory: ['Kadet\Highlighter\KeyLighter', 'get']
+
+    League\CommonMark\Environment:
+        factory: ['League\CommonMark\Environment', 'createGFMEnvironment']
+        calls:
+            - ['addExtension', ['@App\CommonMark\KeylighterExtension']]
+
+    League\CommonMark\EnvironmentInterface: '@League\CommonMark\Environment'
+    League\CommonMark\DocParser: ~
+    League\CommonMark\DocParserInterface: '@League\CommonMark\DocParser'
+    League\CommonMark\HtmlRenderer: ~
+
+    League\CommonMark\CommonMarkConverter:
+      arguments:
+        $environment: '@League\CommonMark\EnvironmentInterface'
+
+    twig.markdown.default:
+      class: Twig\Extra\Markdown\LeagueMarkdown
+      arguments: ['@League\CommonMark\CommonMarkConverter']

@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  php:
+    image: symfony-demo:dev
+    environment:
+      - APP_ENV=dev
+    volumes: 
+      - .:/var/www
+    ports:
+      - 8080:8080
+
+volumes:
+  esdata: ~
+  metricbeat: ~

@@ -18,6 +18,7 @@ $lato-font-path: '~lato-font/fonts';
 @import '~lato-font/scss/public-api';
 @include lato-include-font('normal');
 @include lato-include-font('bold');
+@import "./github.css";
 
 /* Basic styles
    ------------------------------------------------------------------------- */

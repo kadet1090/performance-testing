@@ -42,13 +42,13 @@ services:
       - "8080:8089"
     volumes:
       - ./locust:/mnt/locust
-    command: -f /mnt/locust/locustfile.py --master -H http://locust-master:8089
+    command: "-f /mnt/locust/locustfile.py --tags ${LOCUST_TAGS:-light} --master -H http://locust-master:8089"
 
   locust-worker:
     build: locust
     volumes:
       - ./locust:/mnt/locust
-    command: -f /mnt/locust/locustfile.py --worker --master-host locust-master
+    command: "-f /mnt/locust/locustfile.py --tags ${LOCUST_TAGS:-light} --worker --master-host locust-master"
 
   frontend-rr:
     image: symfony-demo:rr
@@ -110,4 +110,3 @@ services:
 volumes:
   esdata: ~
   metricbeat: ~
-  fpm-socket: ~

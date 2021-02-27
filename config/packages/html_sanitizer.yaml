@@ -2,6 +2,7 @@ html_sanitizer:
     default_sanitizer: 'default'
     sanitizers:
         default:
+            max_input_length: 2000000
             # Read https://github.com/tgalopin/html-sanitizer/blob/master/docs/1-getting-started.md#extensions
             # to learn more about which extensions you would like to enable.
             extensions:
@@ -12,6 +13,11 @@ html_sanitizer:
                 - 'code'
                 # - 'iframe'
                 # - 'extra'
+            tags:
+              span:
+                allowed_attributes: ['class']
+              pre:
+                allowed_attributes: ['class']
 
             # Read https://github.com/tgalopin/html-sanitizer/blob/master/docs/3-configuration-reference.md
             # to discover all the available options for each extension.

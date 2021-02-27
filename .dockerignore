@@ -4,6 +4,13 @@
 *.Dockerfile
 docker-compose.*
 Makefile
+/data/
+/analytics/
+/venv/
+/.vscode/
+/.idea/
+__pycache__/
+/.git/
 
 ###> symfony/framework-bundle ###
 /.env.local

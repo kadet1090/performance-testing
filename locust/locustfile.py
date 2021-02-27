@@ -3,7 +3,7 @@ import os
 import sys
 import gevent
 
-from locust import HttpUser, task, between, LoadTestShape, events
+from locust import HttpUser, task, tag, between, LoadTestShape, events
 from random import randint, choice, seed
 from queue import Queue
 from elasticsearch import Elasticsearch, exceptions
@@ -87,37 +87,54 @@ class CustomShapeLoad(LoadTestShape):
 
         return None
 
+def is_not_code_sample(post):
+    return "Code Sample" not in post["title"]
+
 class BlogUser(HttpUser):
     wait_time = between(1, 2.5)
 
     def on_start(self):
         self.max_pages = 3
-        self.tags = [ tag['name'] for tag in self.client.get("/en/api/tags").json() ]
+        self.tags = [ tag['name'] for tag in self.client.get("/en/api/tags").json() if tag['name'] != 'sample' ]
         self.queries = ["Lorem ipsum", "vitae velit", "Ubi est", "dolor"]
 
+    @tag("light")
     @task(5)
     def browse_tag(self):
         tag = choice(self.tags)
         self.client.get(f"/en/blog?tag={tag}")
 
         posts = self.client.get(f"/en/api/posts?tag={tag}").json()
+        self.browse_posts(posts, 3, is_not_code_sample)
+
+    @tag("heavy")
+    @task(2)
+    def browse_tag(self):
+        tag = "sample"
+        self.client.get(f"/en/blog?tag={tag}")
+
+        posts = self.client.get(f"/en/api/posts?tag={tag}").json()
         self.browse_posts(posts, 3)
 
+    @tag("light")
     @task(10)
     def browse_task(self):
         page = randint(1, self.max_pages)
 
         self.client.get(f"/en/blog/page/{page}")
         posts = self.client.get(f"/en/api/posts?page={page}").json()
-        self.browse_posts(posts, 4)
+        self.browse_posts(posts, 4, is_not_code_sample)
 
+    @tag("light")
     @task(2)
     def search_task(self):
         query = choice(self.queries)
         posts = self.client.get(f"/en/api/search?q={query}").json()
-        self.browse_posts(posts, 2)
+        self.browse_posts(posts, 2, is_not_code_sample)
 
-    def browse_posts(self, posts, count):
+    def browse_posts(self, posts, count, check = lambda post: True):
+        posts = [ post for post in posts if check(post) ]
+
         if len(posts) == 0:
             return
 

@@ -123,9 +123,6 @@
     "egulias/email-validator": {
         "version": "2.1.17"
     },
-    "erusev/parsedown": {
-        "version": "1.7.4"
-    },
     "evenement/evenement": {
         "version": "v3.0.1"
     },
@@ -138,6 +135,9 @@
     "jean85/pretty-package-versions": {
         "version": "2.0.2"
     },
+    "kadet/keylighter": {
+        "version": "dev-master"
+    },
     "laminas/laminas-code": {
         "version": "3.4.1"
     },
@@ -149,6 +149,9 @@
     },
     "laminas/laminas-zendframework-bridge": {
         "version": "1.1.1"
+    },
+    "league/commonmark": {
+        "version": "1.5.7"
     },
     "league/uri-parser": {
         "version": "1.4.1"
