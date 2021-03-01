@@ -38,6 +38,8 @@ services:
     build: locust
     environment:
       - ELASTICSEARCH_HOST=http://elastic:9200
+      - LOCUST_TIME_LIMIT
+      - LOCUST_MAX_USER_COUNT
     ports:
       - "8080:8089"
     volumes:
@@ -46,6 +48,9 @@ services:
 
   locust-worker:
     build: locust
+    environment:
+      - LOCUST_TIME_LIMIT
+      - LOCUST_MAX_USER_COUNT
     volumes:
       - ./locust:/mnt/locust
     command: "-f /mnt/locust/locustfile.py --tags ${LOCUST_TAGS:-light} --worker --master-host locust-master"
